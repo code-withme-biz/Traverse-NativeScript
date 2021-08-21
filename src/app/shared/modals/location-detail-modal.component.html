@@ -1,0 +1,18 @@
+<StackLayout class="detail-action">
+    <StackLayout class="action-bar detail-action-bar p-t-20 p-b-20">
+        <FlexboxLayout justifyContent="space-between" alignItems="center">
+            <Label text="&#xf00d;" class="fa close-icon" marginLeft="20" (tap)="onClose()"></Label>
+            <StackLayout class="action-bar-title">
+                <Label text="&#xf041; &nbsp;{{title}}" class="fa" marginRight="20"></Label>
+            </StackLayout>
+        </FlexboxLayout>
+    </StackLayout>
+    <ScrollView class="page page-content detail-modal-content">
+        <StackLayout horizontalAlignment="center">
+            <Label text="Name" class="label text-center" marginTop="20" marginBottom="5"></Label>
+            <Label [text]="location.displayName" class="strong text-center" marginBottom="20"></Label>
+            <Label text="Type" class="label text-center" marginTop="20" marginBottom="5"></Label>
+            <Label [text]="location.type" class="strong text-center" marginBottom="20"></Label>
+        </StackLayout>
+    </ScrollView>
+</StackLayout>

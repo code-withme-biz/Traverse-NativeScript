@@ -1,0 +1,30 @@
+<StackLayout class="detail-action">
+    <StackLayout class="action-bar detail-action-bar p-t-20 p-b-20">
+        <FlexboxLayout justifyContent="space-between" alignItems="center">
+            <Label text="&#xf00d;" class="fa close-icon" marginLeft="20" (tap)="onClose()"></Label>
+            <StackLayout class="action-bar-title">
+                <Label text="&#xf2bb; &nbsp;Driver" class="fa" marginRight="20"></Label>
+            </StackLayout>
+        </FlexboxLayout>
+    </StackLayout>
+    <ScrollView class="page page-content detail-modal-content">
+        <StackLayout horizontalAlignment="center">
+            <Label text="Name" class="label text-center" marginTop="20" marginBottom="5"></Label>
+            <Label [text]="driver.displayName" class="strong text-center" marginBottom="20"></Label>
+            <Label text="Phone" class="label text-center" marginTop="20" marginBottom="5"></Label>
+            <Label [text]="driver.phone" class="strong text-center" marginBottom="20"></Label>
+            <GridLayout rows="*" columns="*, *" width="70%">
+                <Button *ngIf="driver.phone" text="Call" row="0" col="0" (tap)="onPhoneCallTap(driver.phone)"
+                    class="btn btn-dark"></Button>
+                <Button *ngIf="driver.phone" text="SMS" row="0" col="1" (tap)="onPhoneSmsTap(driver.phone)"
+                    class="btn btn-dark"></Button>
+            </GridLayout>
+            <StackLayout *ngIf="driver.vehicles" class="hr-light" marginTop="20" marginBottom="20" width="40%">
+            </StackLayout>
+            <Label *ngIf="driver.vehicles" text="&#xf1b9;" class="fa label text-center" marginBottom="5"></Label>
+            <Label *ngIf="driver.vehicles" text="Vehicles" class="label text-center" marginBottom="15"></Label>
+            <Button *ngFor="let vehicle of driver.vehicles" [text]="vehicle.displayName" class="btn btn-primary"
+                (tap)="onVehicleTap(vehicle.id)" width="70%"></Button>
+        </StackLayout>
+    </ScrollView>
+</StackLayout>

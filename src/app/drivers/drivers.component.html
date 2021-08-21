@@ -1,0 +1,25 @@
+<ActionBar class="action-bar">
+    <NavigationButton ios:visibility="collapsed" icon="res://hmb" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem android:visibility="collapsed" icon="~/assets/navigation/menu.png" (tap)="onDrawerButtonTap()"
+        ios.position="left"></ActionItem>
+    <Label text="&#xf2bb; &nbsp;Drivers" class="fa action-bar-title"></Label>
+</ActionBar>
+
+<StackLayout>
+    <Button *ngIf="!currentEvent.id" [nsRouterLink]="['/events']" text="No Event Selected" class="btn btn-warning"
+        width="70%" marginTop="10"></Button>
+    <Label text="Tap a Driver below to view details" class="text-center badge badge-light" width="95%"
+        marginTop="5"></Label>
+    <ActivityIndicator *ngIf="processing" [busy]="processing" marginTop="10" marginBottom="10"></ActivityIndicator>
+    <RadListView #driverListView [items]="drivers" pullToRefresh="true"
+        (pullToRefreshInitiated)="onPullToRefreshInitiated($event)" height="100%" class="list-group">
+        <ng-template let-driver="item">
+            <StackLayout (tap)="selectDriver(driver.id)" orientation="horizontal" class="list-group-item">
+                <Label [text]="driver.displayName" width="42%"></Label>
+                <Label [text]="driver.vehicles[0].displayName" width="38%" class="badge badge-primary"
+                    marginRight="10"></Label>
+                <Label text="&#xf067;" width="20%" class="fa text-center badge badge-light"></Label>
+            </StackLayout>
+        </ng-template>
+    </RadListView>
+</StackLayout>

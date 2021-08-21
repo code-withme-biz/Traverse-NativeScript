@@ -1,0 +1,122 @@
+<ActionBar class="action-bar">
+    <NavigationButton ios:visibility="collapsed" icon="res://hmb" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem android:visibility="collapsed" icon="~/assets/navigation/menu.png" (tap)="onDrawerButtonTap()"
+        ios.position="left"></ActionItem>
+    <Label [text]="currentEvent.displayName" class="action-bar-title"></Label>
+</ActionBar>
+
+<ScrollView class="page page-content">
+
+    <StackLayout horizontalAlignment="center" marginBottom="30">
+        <ActivityIndicator *ngIf="processing" [busy]="processing" marginTop="10" marginBottom="10"></ActivityIndicator>
+
+        <GridLayout rows="auto" colums="2" width="100%">
+            <Button col="0" text="&#xf060; &nbsp;&nbsp;Back to Runs" width="150" class="fa btn-dark btn btn-sm"
+                [nsRouterLink]="['/runs']" horizontalAlignment="left"></Button>
+            <Button col="1" (tap)="onRefreshInitiated()" text="&#xf021;" class="fa btn btn-light" width="50"
+                marginLeft="60" marginTop="5" horizontalAlignment="right"></Button>
+        </GridLayout>
+        <StackLayout class="hr-light" marginTop="20" marginBottom="20" width="90%"></StackLayout>
+        <Label [text]="run.scheduledStart | timezonedDate:'dddd, MMM DD, YYYY'" class="title text-center" marginTop="5"
+            marginBottom="10"></Label>
+
+        <Label [text]="run.id | slug: 'R'" class="text-center badge badge-dark" width="30%"></Label>
+        <StackLayout class="hr-light" marginTop="20" marginBottom="20" width="90%"></StackLayout>
+        <Label text="Status" class="label text-center" marginBottom="5"></Label>
+        <Button *ngIf="run.status === 'standby'" text="Scheduled" class="btn btn-secondary"
+            (tap)="openModal('run-status')" width="70%"></Button>
+        <Button *ngIf="run.status === 'at-pickup'" text="At Pickup" class="btn btn-info" (tap)="openModal('run-status')"
+            width="70%"></Button>
+        <Button *ngIf="run.status === 'en-route'" text="En Route" class="btn btn-primary"
+            (tap)="openModal('run-status')" width="70%"></Button>
+        <Button *ngIf="run.status === 'complete'" text="Complete" class="btn btn-success"
+            (tap)="openModal('run-status')" width="70%"></Button>
+        <Button *ngIf="run.status === 'departing'" text="Departing" class="btn btn-danger"
+            (tap)="openModal('run-status')" width="70%"></Button>
+        <StackLayout class="hr-light" marginTop="20" marginBottom="20" width="90%"></StackLayout>
+        <Label text="&#xf041;" class="fa label text-center" marginBottom="5"></Label>
+        <Label text="Pick Up" class="label text-center" marginBottom="10"></Label>
+
+        <Label *ngIf="(!run.pickupStart || run.pickupStart === run.scheduledStart)"
+            [text]="'Pick Up: ' + (run.scheduledStart | timezonedDate:'MM-DD-YY hh:mm A')" class="text-center"
+            marginBottom="10"></Label>
+        <Label *ngIf="run.pickupStart !== run.scheduledStart"
+            [text]="'Depart: ' + (run.scheduledStart | timezonedDate:'MM-DD-YY hh:mm A')" class="text-center"
+            marginBottom="10"></Label>
+        <Label *ngIf="!showScheduledEnd && run.pickupStart !== run.scheduledStart"
+            [text]="'Pick Up: ' + (run.pickupStart | timezonedDate:'MM-DD-YY hh:mm A')" class="text-center"
+            marginBottom="10"></Label>
+        <Label *ngIf="showScheduledEnd && run.pickupStart && run.scheduledStart !== run.pickupStart"
+            [text]="'Pick Up: ' + (run.pickupStart | timezonedDate:'MM-DD-YY hh:mm A')" class="text-center"
+            marginBottom="10"></Label>
+        <Label *ngIf="showScheduledEnd" [text]="'Drop Off: ' + (run.scheduledEnd | timezonedDate:'MM-DD-YY hh:mm A')"
+            class="text-center" marginBottom="10"></Label>
+        <Label (tap)="showScheduledEnd = !showScheduledEnd" [text]="run.duration" class="badge badge-info text-center"
+            width="60%" marginBottom="10"></Label>
+        <Button [isEnabled]="run.sourceLocationId !== null" [text]="run.sourceLocationName" class="btn btn-primary"
+            marginTop="10" marginBottom="10" (tap)="openModal('pickup-location')" width="70%"></Button>
+        <Label *ngIf="run.customFields.pickUpNotes" [text]="'Pick Up Notes: ' + run.customFields.pickUpNotes"
+            class="badge badge-light text-center" width="70%" textWrap="true"></Label>
+        <Label *ngIf="run.runNotes" [text]="'Run Notes: ' + run.runNotes" marginTop="10" marginBottom="10"
+            class="badge badge-light text-center" width="70%" textWrap="true"></Label>
+        <Label *ngIf="run.driverNotes" [text]="'Driver Notes: ' + run.driverNotes" class="badge badge-light text-center"
+            width="70%" textWrap="true"></Label>
+        <Label *ngIf="run.carServiceNotes" [text]="'Car Service Notes: ' + run.carServiceNotes"
+            class="badge badge-light text-center" width="70%" textWrap="true"></Label>
+        <StackLayout *ngIf="run.flightNumbers.length > 0" class="hr-light" marginTop="20" marginBottom="20" width="90%">
+        </StackLayout>
+        <Label *ngIf="run.flightNumbers.length > 0" text="&#xf072;" class="fa label text-center"
+            marginBottom="5"></Label>
+        <Label *ngIf="run.flightNumbers.length > 0" text="Flights" class="label text-center" marginBottom="10"></Label>
+        <Button *ngFor="let flightNumber of run.flightNumbers" [text]="flightNumber" class="btn btn-primary"
+            marginTop="10" marginBottom="10" (tap)="openFlightNumber(flightNumber)" width="70%"></Button>
+        <StackLayout class="hr-light" marginTop="20" marginBottom="20" width="90%"></StackLayout>
+        <Label text="&#xf041;" class="fa label text-center" marginBottom="5"></Label>
+        <Label text="Drop Off" class="label text-center" marginBottom="10"></Label>
+        <Button [isEnabled]="run.destinationLocationId !== null" [text]="run.destinationLocationName"
+            class="btn btn-primary" marginTop="10" marginBottom="10" (tap)="openModal('dropoff-location')"
+            width="70%"></Button>
+        <Label *ngIf="run.customFields.dropOffNotes" [text]="'Drop Off Notes: ' + run.customFields.dropOffNotes"
+            class="badge badge-light text-center" width="70%" textWrap="true"></Label>
+        <StackLayout class="hr-light" marginTop="20" marginBottom="20" width="90%"></StackLayout>
+        <Label text="&#xf0c0;" class="fa label text-center" marginBottom="5"></Label>
+        <Label text="Group" class="label text-center" marginBottom="15"></Label>
+        <Label [text]="run.numberOfPassengers + ' Passengers'" class="badge badge-light text-center"
+            width="30%"></Label>
+        <Button [isEnabled]="run.groupId !== null" [text]="run.groupName" class="btn btn-primary" marginTop="10"
+            marginBottom="10" (tap)="openModal('group')" width="70%"></Button>
+        <StackLayout class="hr-light" marginTop="20" marginBottom="20" width="90%"></StackLayout>
+        <Label text="&#xf183;" class="fa label text-center" marginBottom="5"></Label>
+        <Label text="Greeter" class="label text-center" marginBottom="5"></Label>
+        <Button [isEnabled]="run.greeterId !== null" [text]="run.greeterName" class="btn btn-primary"
+            (tap)="openModal('greeter')" width="70%"></Button>
+        <StackLayout *ngIf="run.fileAttachments.length > 0" class="hr-light" marginTop="20" marginBottom="20"
+            width="90%"></StackLayout>
+        <Label *ngIf="run.fileAttachments.length > 0" text="&#xf0c6;" class="fa label text-center"
+            marginBottom="5"></Label>
+        <Label *ngIf="run.fileAttachments.length > 0" text="File Attachments" class="label text-center"
+            marginBottom="5"></Label>
+        <Button *ngFor="let attachment of run.fileAttachments" [text]="attachment.displayName" class="btn btn-primary"
+            (tap)="openRunFileAttachment(attachment)" width="70%"></Button>
+        <StackLayout class="hr-light" marginTop="20" marginBottom="20" width="90%"></StackLayout>
+        <Button *ngIf="!extendedView" text="&#xf067;" class="fa btn btn-light" (tap)="extendedView = true"
+            width="60%"></Button>
+        <Button *ngIf="extendedView" text="&#xf068;" class="fa btn btn-light" (tap)="extendedView = false"
+            width="60%"></Button>
+        <Label *ngIf="extendedView" text="&#xf2bb;" class="fa label text-center" marginTop="10"
+            marginBottom="5"></Label>
+        <Label *ngIf="extendedView" text="Driver" class="label text-center" marginBottom="5"></Label>
+        <Button *ngIf="extendedView" [isEnabled]="run.driverId !== null" [text]="run.driverName" class="btn btn-primary"
+            (tap)="openModal('driver')" width="70%"></Button>
+        <StackLayout *ngIf="extendedView" class="hr-light" marginTop="20" marginBottom="20" width="90%">
+        </StackLayout>
+        <Label *ngIf="extendedView" text="&#xf1b9;" class="fa label text-center" marginBottom="5"></Label>
+        <Label *ngIf="extendedView" text="Vehicle" class="label text-center" marginBottom="15"></Label>
+        <Label *ngIf="extendedView" [text]="run.vehicleTypeName" class="badge badge-light text-center"
+            width="30%"></Label>
+        <Button *ngIf="extendedView" [isEnabled]="run.vehicleId !== null" [text]="run.vehicleName"
+            class="btn btn-primary" (tap)="openModal('vehicle')" width="70%"></Button>
+        <StackLayout class="hr-light" marginTop="20" marginBottom="30" width="90%"></StackLayout>
+        <Button text="&#xf060; &nbsp;&nbsp;Back to Runs" class="fa btn btn-dark" [nsRouterLink]="['/runs']"></Button>
+    </StackLayout>
+</ScrollView>

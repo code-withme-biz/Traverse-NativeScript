@@ -1,0 +1,71 @@
+<ActionBar class="action-bar">
+    <NavigationButton ios:visibility="collapsed" icon="res://hmb" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem android:visibility="collapsed" icon="~/assets/navigation/menu.png" (tap)="onDrawerButtonTap()"
+        ios.position="left"></ActionItem>
+    <Label [text]="currentEvent.displayName" class="action-bar-title"></Label>
+</ActionBar>
+
+<StackLayout>
+    <GridLayout rows="auto" colums="*">
+        <Label col="0" [text]="dateFilterLabel" class="filter-label badge badge-light"></Label>
+        <Button *ngIf="filterDate" col="1" text="&#xf00d;" class="fa btn btn-sm btn-light" (tap)="clearDateFilter()"
+            width="60"></Button>
+        <Button col="2" text="&#xf073;" class="fa btn btn-md btn-dark" (tap)="openRunsDatepicker()" width="60"
+            horizontalAlignment="right"></Button>
+    </GridLayout>
+
+    <Button *ngIf="!currentEvent.name" [nsRouterLink]="['/events']" text="No Event Selected" class="btn btn-warning"
+        width="70%" marginTop="10"></Button>
+
+    <StackLayout *ngIf="currentDayRosters && currentDayRosters.length > 0" orientation="horizontal">
+        <Label marginTop="7" textWrap="true" paddingLeft="10"
+            text="Roster: {{ currentDayRosters[0].scheduledStart | timezonedDate:'hh:mm A' }} - {{ currentDayRosters[0].scheduledEnd | timezonedDate:'hh:mm A' }}"
+            width="80%" (tap)="showRosterDialog()"></Label>
+        <Label textAlign="right" *ngIf="currentDayRosters.length > 1" class="badge badge-primary text-center"
+            (tap)="showRosterDialog()" text="(+{{ currentDayRosters.length - 1 }})" width="20%"></Label>
+    </StackLayout>
+
+    <Label text="Tap a Run below to view details" class="text-center badge badge-light" width="95%"
+        marginTop="5"></Label>
+    <ActivityIndicator *ngIf="processing" [busy]="processing" marginTop="10" marginBottom="10"></ActivityIndicator>
+
+    <RadListView #runListView [items]="runs" pullToRefresh="true"
+        (pullToRefreshInitiated)="onPullToRefreshInitiated($event)" height="100%" class="list-group">
+        <ng-template let-run="item">
+            <StackLayout (tap)="selectRun(run.id)" orientation="horizontal" class="list-group-item">
+
+                <Label *ngIf="run.status === 'standby'" textAlignment="center" fontWeight="bold" text="Scheduled"
+                    paddingTop="15" paddingBottom="15" width="22%" class="badge badge-secondary"
+                    marginRight="10"></Label>
+                <Label *ngIf="run.status === 'at-pickup'" textAlignment="center" fontWeight="bold" text="At Pickup"
+                    paddingTop="15" paddingBottom="15" width="22%" class="badge badge-info" marginRight="10"></Label>
+                <Label *ngIf="run.status === 'en-route'" textAlignment="center" fontWeight="bold" text="En Route"
+                    paddingTop="15" paddingBottom="15" width="22%" class="badge badge-primary" marginRight="10"></Label>
+                <Label *ngIf="run.status === 'complete'" textAlignment="center" fontWeight="bold" text="Complete"
+                    paddingTop="15" paddingBottom="15" width="22%" class="badge badge-success" marginRight="10"></Label>
+                <Label *ngIf="run.status === 'departing'" textAlignment="center" fontWeight="bold" text="Departing"
+                    paddingTop="15" paddingBottom="15" width="22%" class="badge badge-danger" marginRight="10"></Label>
+                <StackLayout>
+                    <Label fontSize="16" textWrap="true"
+                        *ngIf="run.scheduledStart && run.pickupStart === run.scheduledStart"
+                        [text]="'Pickup: ' + (run.scheduledStart | timezonedDate:'MM-DD-YY hh:mm A')"
+                        width="100%"></Label>
+                    <Label fontSize="16" textWrap="true"
+                        *ngIf="run.scheduledStart && run.pickupStart !== run.scheduledStart"
+                        [text]="'Depart: ' + (run.scheduledStart | timezonedDate:'MM-DD-YY hh:mm A')"
+                        width="100%"></Label>
+                    <Label fontSize="16" textWrap="true"
+                        *ngIf="run.pickupStart && run.pickupStart !== run.scheduledStart"
+                        [text]="'Pickup: ' + (run.pickupStart | timezonedDate:'MM-DD-YY hh:mm A')" width="100%"></Label>
+                    <StackLayout orientation="horizontal" marginTop="5">
+                        <Label text="&#xf041;" fontSize="15" class="fa text-muted"></Label>
+                        <Label marginLeft="5" textWrap="true" fontSize="15" [text]="run.sourceLocation.displayName"
+                            width="100%" class="text-muted"></Label>
+                    </StackLayout>
+
+                </StackLayout>
+
+            </StackLayout>
+        </ng-template>
+    </RadListView>
+</StackLayout>

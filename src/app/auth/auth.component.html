@@ -1,0 +1,31 @@
+<FlexboxLayout class="page">
+    <StackLayout [formGroup]="authForm" class="form" verticalAlignment="middle">
+        <Image src="~/assets/logo/traverse.png" class="logo" width="50%" marginBottom="50"></Image>
+        <PreviousNextView>
+            <GridLayout rows="auto, auto, auto">
+                <StackLayout row="0" class="input-field">
+                    <Label *ngIf="authError" [text]="authError" class="text-center text-error" marginTop="10"
+                        marginBottom="20" width="70%"></Label>
+                    <TextField formControlName="username" class="input" marginTop="10" hint="Username"
+                        [isEnabled]="!processing" autocorrect="false" autocapitalizationType="none" returnKeyType="next"
+                        (returnPress)="focusPassword()" width="70%"></TextField>
+                    <StackLayout class="hr-light" width="70%"></StackLayout>
+                </StackLayout>
+                <StackLayout row="1" class="input-field">
+                    <TextField #password formControlName="password" class="input" marginTop="10" hint="Password"
+                        [isEnabled]="!processing" secure="true" returnKeyType="Done" width="70%"></TextField>
+                    <StackLayout class="hr-light" width="70%"></StackLayout>
+                    <CheckBox width="70%" marginTop="20" #rememberMeCheckBox text="Remember Me"
+                        (tap)="toggleRememberCheckboxValue()" class="checkbox" checked="{{ rememberMe }}">
+                    </CheckBox>
+                </StackLayout>
+
+                <ActivityIndicator rowSpan="3" [busy]="processing"></ActivityIndicator>
+            </GridLayout>
+        </PreviousNextView>
+        <Button text="LOG IN&nbsp; &#xf061;" [isEnabled]="!processing" (tap)="submit()" class="fa btn btn-primary"
+            marginTop="10" width="70%"></Button>
+
+        <Label text="Forgot Password?" (tap)="forgotPassword()" class="text-center" marginTop="20"></Label>
+    </StackLayout>
+</FlexboxLayout>

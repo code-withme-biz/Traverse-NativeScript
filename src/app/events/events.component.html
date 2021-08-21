@@ -1,0 +1,14 @@
+<ActionBar class="action-bar">
+    <NavigationButton ios:visibility="collapsed" icon="res://hmb" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem android:visibility="collapsed" icon="~/assets/navigation/menu.png" (tap)="onDrawerButtonTap()"
+        ios.position="left"></ActionItem>
+    <Label text="&#xf073; &nbsp;Events" class="fa action-bar-title"></Label>
+</ActionBar>
+
+
+<ScrollView class="page page-content">
+    <StackLayout horizontalAlignment="center">
+        <Button *ngFor="let event of events" (tap)="selectEvent(event.id)" [text]="event.displayName"
+        class="btn btn-primary"></Button>
+    </StackLayout>
+</ScrollView>

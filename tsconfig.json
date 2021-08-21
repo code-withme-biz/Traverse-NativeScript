@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "es5",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noEmitHelpers": true,
+        "noEmitOnError": true,
+        "moduleResolution": "node",
+        "lib": [
+            "es6",
+            "dom",
+            "es2015.iterable"
+        ],
+        "baseUrl": "src",
+        "paths": {
+            "~/*": [
+                "src/*"
+            ],
+            "*": [
+                "./node_modules/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "platforms"
+    ]
+}

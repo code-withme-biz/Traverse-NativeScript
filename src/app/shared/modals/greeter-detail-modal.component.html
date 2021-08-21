@@ -1,0 +1,24 @@
+<StackLayout class="detail-action">
+    <StackLayout class="action-bar detail-action-bar p-t-20 p-b-20">
+        <FlexboxLayout justifyContent="space-between" alignItems="center">
+            <Label text="&#xf00d;" class="fa close-icon" marginLeft="20" (tap)="onClose()"></Label>
+            <StackLayout class="action-bar-title">
+                <Label text="&#xf183; &nbsp;Greeter" class="fa" marginRight="20"></Label>
+            </StackLayout>
+        </FlexboxLayout>
+    </StackLayout>
+    <ScrollView class="page page-content detail-modal-content">
+        <StackLayout horizontalAlignment="center">
+            <Label text="Name" class="label text-center" marginTop="20" marginBottom="5"></Label>
+            <Label [text]="greeter.displayName" class="strong text-center"></Label>
+            <Label text="Phone" class="label text-center" marginTop="20" marginBottom="5"></Label>
+            <Label [text]="greeter.phone" class="strong text-center"></Label>
+            <GridLayout rows="*" columns="*, *" width="70%">
+                <Button *ngIf="greeter.phone" text="Call" row="0" col="0" (tap)="onPhoneCallTap(greeter.phone)"
+                    class="btn btn-dark"></Button>
+                <Button *ngIf="greeter.phone" text="SMS" row="0" col="1" (tap)="onPhoneSmsTap(greeter.phone)"
+                    class="btn btn-dark"></Button>
+            </GridLayout>
+        </StackLayout>
+    </ScrollView>
+</StackLayout>

@@ -1,0 +1,17 @@
+<StackLayout class="detail-action">
+    <StackLayout class="action-bar detail-action-bar p-t-20 p-b-20">
+        <FlexboxLayout justifyContent="space-between" alignItems="center">
+            <Label text="&#xf00d;" class="fa close-icon" marginLeft="20" (tap)="onClose()"></Label>
+            <StackLayout class="action-bar-title">
+                <Label text="&#xf073; &nbsp;Date Filter" class="fa" marginRight="20"></Label>
+            </StackLayout>
+        </FlexboxLayout>
+    </StackLayout>
+    <StackLayout class="page page-content detail-modal-content">
+        <DatePicker [minDate]="minDate" [maxDate]="maxDate" (dateChange)="onDateChanged($event)"
+            (loaded)="onDatePickerLoaded($event)" verticalAlignment="center">
+        </DatePicker>
+        <Button text="Filter Runs" (tap)="filterRuns()" class="btn btn-dark" marginBottom="20" width="70%"></Button>
+        <Button text="Cancel" (tap)="onCancel()" width="60%"></Button>
+    </StackLayout>
+</StackLayout>

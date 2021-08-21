@@ -1,0 +1,45 @@
+<StackLayout class="detail-action">
+    <StackLayout class="action-bar detail-action-bar p-t-20 p-b-20">
+        <FlexboxLayout justifyContent="space-between" alignItems="center">
+            <Label text="&#xf00d;" class="fa close-icon" marginLeft="20" (tap)="onClose()"></Label>
+            <StackLayout class="action-bar-title">
+                <Label text="&#xf0c0; &nbsp;Group" class="fa" marginRight="20"></Label>
+            </StackLayout>
+        </FlexboxLayout>
+    </StackLayout>
+    <ScrollView class="page page-content detail-modal-content">
+        <StackLayout horizontalAlignment="center">
+            <StackLayout>
+                <Label text="Name" class="label text-center" marginTop="20" marginBottom="5"></Label>
+                <Label [text]="group.displayName" class="strong text-center"></Label>
+                <Label text="Members" class="label text-center" marginTop="20" marginBottom="10"></Label>
+                <StackLayout class="hr-light" marginTop="10" marginBottom="10" width="45%"></StackLayout>
+                <Label text="Run Contact" class="text-center"></Label>
+                <StackLayout class="hr-light" marginTop="5" marginBottom="10" width="20%"></StackLayout>
+                <Label [text]="primaryContact.type" class="badge badge-light text-center" marginBottom="5"></Label>
+                <Label [text]="primaryContact.firstName + ' ' + primaryContact.lastName" class="strong text-center"
+                    marginBottom="5"></Label>
+                <Label [text]="primaryContact.phone" class="strong text-center"></Label>
+                <GridLayout rows="*" columns="*, *" width="70%">
+                    <Button *ngIf="primaryContact.phone" text="Call" row="0" col="0"
+                        (tap)="onPhoneCallTap(primaryContact.phone)" class="btn btn-dark"></Button>
+                    <Button *ngIf="primaryContact.phone" text="SMS" row="0" col="1"
+                        (tap)="onPhoneSmsTap(primaryContact.phone)" class="btn btn-dark"></Button>
+                </GridLayout>
+            </StackLayout>
+            <StackLayout *ngFor="let contact of contacts">
+                <StackLayout class="hr-light" marginTop="10" marginBottom="10" width="45%"></StackLayout>
+                <Label [text]="contact.type" class="badge badge-light text-center" marginBottom="5"></Label>
+                <Label [text]="contact.firstName + ' ' + contact.lastName" class="strong text-center"
+                    marginBottom="5"></Label>
+                <Label [text]="contact.phone" class="strong text-center"></Label>
+                <GridLayout rows="*" columns="*, *" marginBottom="30" width="70%">
+                    <Button *ngIf="contact.phone" text="Call" row="0" col="0" (tap)="onPhoneCallTap(contact.phone)"
+                        class="btn btn-dark"></Button>
+                    <Button *ngIf="contact.phone" text="SMS" row="0" col="1" (tap)="onPhoneSmsTap(contact.phone)"
+                        class="btn btn-dark"></Button>
+                </GridLayout>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</StackLayout>

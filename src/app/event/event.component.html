@@ -1,0 +1,20 @@
+<ActionBar class="action-bar">
+    <NavigationButton ios:visibility="collapsed" icon="res://hmb" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem android:visibility="collapsed" icon="~/assets/navigation/menu.png" (tap)="onDrawerButtonTap()"
+        ios.position="left"></ActionItem>
+    <Label [text]="event.displayName" class="action-bar-title"></Label>
+</ActionBar>
+
+<StackLayout horizontalAlignment="center">
+    <Label text="Name" class="label text-center" marginTop="30" marginBottom="5"></Label>
+    <Label [text]="event.displayName" class="strong text-center"></Label>
+    <Label text="Location" class="label text-center" marginTop="30" marginBottom="5"></Label>
+    <Label [text]="event.location" class="strong text-center"></Label>
+    <Label text="Timezone" class="label text-center" marginTop="30" marginBottom="5"></Label>
+    <Label [text]="event.configuration.timezone" class="strong text-center"></Label>
+    <Label text="Description" class="label text-center" marginTop="30" marginBottom="5"></Label>
+    <Label [text]="event.description" class="strong text-center"></Label>
+    <Label text="Driver Notification Span" class="label text-center" marginTop="30" marginBottom="5"></Label>
+    <Label [text]="event.configuration.notificationRangeInHours + ' Hours'" class="strong text-center"></Label>
+    <Button text="&#xf1b9; Runs" (tap)="goToRuns()" class="fa btn btn-primary" marginTop="50" width="70%"></Button>
+</StackLayout>

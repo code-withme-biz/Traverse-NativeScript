@@ -1,0 +1,34 @@
+<ActionBar class="action-bar">
+    <NavigationButton ios:visibility="collapsed" icon="res://hmb" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem android:visibility="collapsed" icon="~/assets/navigation/menu.png" (tap)="onDrawerButtonTap()"
+        ios.position="left"></ActionItem>
+    <Label text="&#xf013; &nbsp;User Settings" class="fa action-bar-title"></Label>
+</ActionBar>
+
+<StackLayout [formGroup]="changePasswordForm" class="form" horizontalAlignment="center">
+    <Label [text]="user.firstName + ' ' + user.lastName" class="strong text-center" marginTop="30"
+        marginBottom="10"></Label>
+    <StackLayout class="hr-light" width="30%"></StackLayout>
+    <Label [text]="user.username" class="label text-center" marginTop="10" marginBottom="20"></Label>
+    <Label *ngIf="changePasswordSuccess" text="Password Changed!" class="text-center text-success"></Label>
+    <Button *ngIf="!showPasswordForm" (tap)="showPasswordForm = true" text="&#xf044; CHANGE PASSWORD"
+        class="fa btn btn-warning"></Button>
+    <GridLayout *ngIf="showPasswordForm && !changePasswordSuccess" rows="auto, auto, auto">
+        <StackLayout row="0" class="input-field">
+            <Label *ngIf="changePasswordError" [text]="changePasswordError" class="text-center text-error"
+                marginTop="10" marginBottom="20" width="70%"></Label>
+            <Label *ngIf="changePasswordForm.valid && !passwordsMatch" text="Passwords do not match." class="text-center text-error" marginTop="10" marginBottom="20" width="70%"></Label>
+            <TextField (returnPress)="focusConfirmPassword()" formControlName="password" class="input" marginTop="10"
+                hint="New Password" [isEnabled]="!processing" secure="true" returnKeyType="next" width="70%"></TextField>
+            <StackLayout class="hr-light" width="70%"></StackLayout>
+        </StackLayout>
+        <StackLayout row="1" class="input-field">
+            <TextField #confirmPassword formControlName="confirmPassword" class="input" marginTop="20" hint="Confirm New Password"
+                [isEnabled]="!processing" secure="true" returnKeyType="Done" width="70%"></TextField>
+            <StackLayout class="hr-light" width="70%"></StackLayout>
+        </StackLayout>
+        <ActivityIndicator rowSpan="3" [busy]="processing"></ActivityIndicator>
+    </GridLayout>
+    <Button *ngIf="showPasswordForm && !changePasswordSuccess" [isEnabled]="!processing && changePasswordForm.valid && passwordsMatch" text="&#xf00c; CHANGE PASSWORD" (tap)="onChangePasswordTap()"
+        class="fa btn btn-success" marginTop="20" width="70%"></Button>
+</StackLayout>

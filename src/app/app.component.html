@@ -1,0 +1,39 @@
+<RadSideDrawer [drawerTransition]="sideDrawerTransition">
+    <GridLayout tkDrawerContent rows="auto, *" class="sidedrawer sidedrawer-left">
+        <StackLayout row="0" class="sidedrawer-header">
+            <Image src="~/assets/logo/traverse-light.png" class="sidedrawer-logo"></Image>
+            <Label class="sidedrawer-header-brand" [text]="currentUser.firstName + ' ' + currentUser.lastName"></Label>
+            <Label class="footnote" [text]="currentUser.username"></Label>
+        </StackLayout>
+        <ScrollView row="1" class="sidedrawer-content">
+            <StackLayout>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item"
+                    [class.selected]="isComponentSelected('/events')" (tap)="onNavItemTap('/events')">
+                    <Label col="0" text="&#xf073;" class="fa"></Label>
+                    <Label col="1" text="Events" class="p-r-10"></Label>
+                </GridLayout>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item"
+                    [class.selected]="isComponentSelected('/runs')" (tap)="onNavItemTap('/runs')">
+                    <Label col="0" text="&#xf1b9;" class="fa"></Label>
+                    <Label col="1" text="Runs" class="p-r-10"></Label>
+                </GridLayout>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item"
+                    [class.selected]="isComponentSelected('/drivers')" (tap)="onNavItemTap('/drivers')">
+                    <Label col="0" text="&#xf2bb;" class="fa"></Label>
+                    <Label col="1" text="Drivers" class="p-r-10"></Label>
+                </GridLayout>
+                <StackLayout class="hr-light"></StackLayout>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item"
+                    [class.selected]="isComponentSelected('/user-settings')" (tap)="onNavItemTap('/user-settings')">
+                    <Label col="0" text="&#xf013;" class="fa"></Label>
+                    <Label col="1" text="Settings" class="p-r-10"></Label>
+                </GridLayout>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" (tap)="logoutTap()">
+                    <Label col="0" text="&#xf060;" class="fa"></Label>
+                    <Label col="1" text="Log Out" class="p-r-10"></Label>
+                </GridLayout>
+            </StackLayout>
+        </ScrollView>
+    </GridLayout>
+    <page-router-outlet tkMainContent class="page page-content"></page-router-outlet>
+</RadSideDrawer>
